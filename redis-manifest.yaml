@@ -1,38 +1,38 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: redis-stedi-chase
+  name: chase-stedi-chase
 spec:
   selector:
     matchLabels:
-      app: redis-stedi-chase  # has to match .spec.template.metadata.labels
-  serviceName: redis-stedi-chase
+      app: chase-stedi-chase  # has to match .spec.template.metadata.labels
+  serviceName: chase-stedi-chase
   replicas: 1
   template:
     metadata:
       labels:
-        app: redis-stedi-chase  # has to match .spec.selector.matchLabels
+        app: chase-stedi-chase  # has to match .spec.selector.matchLabels
     spec:
       containers:
-        - name: redis-stedi-chase
-          image: redis:7.0.5-alpine
+        - name: chase-stedi-chase
+          image: chase:7.0.5-alpine
           imagePullPolicy: Always
-          args: ["--requirepass", "$(REDIS_PASS)", "--appendonly", "yes", "--save", "900", "1", "--save", "30", "2"]
+          args: ["--requirepass", "$(chase_PASS)", "--appendonly", "yes", "--save", "900", "1", "--save", "30", "2"]
           ports:
             - containerPort: 6379
-              name: redis
+              name: chase
           env:
-          - name: REDIS_PASS
+          - name: chase_PASS
             valueFrom:
               secretKeyRef:
-                name: redis-secrets-chase
-                key: REDIS_PASS
+                name: chase-secrets-chase
+                key: chase_PASS
           volumeMounts:
-            - name: redis-chase-volume
+            - name: chase-chase-volume
               mountPath: /data
   volumeClaimTemplates:
   - metadata:
-      name: redis-chase-volume
+      name: chase-chase-volume
     spec:
       accessModes:
         - ReadWriteOnce
@@ -43,11 +43,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: redis-stedi-chase
+  name: chase-stedi-chase
 spec:
   ports:
     - port: 6379
-      name: redis
+      name: chase
   clusterIP: None
   selector:
-    app: redis-stedi-chase
+    app: chase-stedi-chase
