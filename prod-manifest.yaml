@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: prod-stedi-chase
-          image: gcr.io/cubs-consulting/stedi # This image needs to refer to the NEW Artifact registry repositorry
+          image: us-docker.pkg.dev/lucid-box-394204/chase-api/stedi-api:latest # This image needs to refer to the NEW Artifact registry repositorry
           env:
             - name: REDIS_PASSWORD
               valueFrom:
